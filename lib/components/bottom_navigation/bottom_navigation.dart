@@ -23,18 +23,19 @@ class Bottomnavigationbar extends StatelessWidget {
           filter: ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5),
           child: Container(
             color: Colors.grey[700]!.withOpacity(0.5),
+            height: 400,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 NavigationIconButton(
                   isSelected: pageIndex == 0,
-                  icon: pageIndex == 0 ? Icons.home : Icons.home_outlined,
+                  text: 'icons/flags/png/br.png',
                   onTap: () => onTabSelected(0),
                 ),
                 const Spacer(),
                 NavigationIconButton(
                   isSelected: pageIndex == 1,
-                  icon: pageIndex == 1 ? Icons.search : Icons.search,
+                  text: 'icons/flags/png/eu.png',
                   onTap: () => onTabSelected(1),
                 ),
                 const Spacer(),

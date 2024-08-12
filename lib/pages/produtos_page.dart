@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:teste_tecnico/models/produtos.dart';
-
-/*
-  final String categoria;
-  final String imagem;
-  final String material;
-  final String departamento;
-  final String id;
- */
+import 'package:teste_tecnico/models/produtos2.dart';
 
 class ProdutosPage extends StatefulWidget {
-  final Produtos produto;
+  final dynamic produto; // Tipo dinâmico para aceitar Produtos e Produtos2
   final String? image;
 
   const ProdutosPage({super.key, required this.produto, this.image});
@@ -78,7 +71,9 @@ class _ProdutosPageState extends State<ProdutosPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
-                          widget.produto.nome,
+                          widget.produto is Produtos
+                              ? widget.produto.nome
+                              : (widget.produto as Produtos2).name,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             color: Colors.white,
@@ -92,7 +87,9 @@ class _ProdutosPageState extends State<ProdutosPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Text(
-                          widget.produto.descricao,
+                          widget.produto is Produtos
+                              ? widget.produto.descricao
+                              : (widget.produto as Produtos2).description,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey[400],
@@ -103,7 +100,7 @@ class _ProdutosPageState extends State<ProdutosPage> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'R\$ ${widget.produto.preco}',
+                        'R\$ ${widget.produto is Produtos ? widget.produto.preco : (widget.produto as Produtos2).price}', 
                         style: const TextStyle(
                           color: Colors.green,
                           fontSize: 25,
@@ -151,17 +148,17 @@ class _ProdutosPageState extends State<ProdutosPage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Categoria do Produto: ${widget.produto.categoria}',
+                                        'Categoria do Produto: ${widget.produto is Produtos ? widget.produto.categoria : (widget.produto as Produtos2).adjective}', // Categoria
                                         style: const TextStyle(
                                             color: Colors.white),
                                       ),
                                       Text(
-                                        'Material do Produto: ${widget.produto.material}',
+                                        'Material do Produto: ${widget.produto is Produtos ? widget.produto.material : (widget.produto as Produtos2).material}', // Material
                                         style: const TextStyle(
                                             color: Colors.white),
                                       ),
                                       Text(
-                                        'Departamento do Produto: ${widget.produto.departamento}',
+                                        'Departamento do Produto: ${widget.produto is Produtos ? widget.produto.departamento : null}', // Departamento
                                         style: const TextStyle(
                                             color: Colors.white),
                                       ),

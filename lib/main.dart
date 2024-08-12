@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teste_tecnico/components/bottom_navigation/bottom_navigation.dart';
-import 'package:teste_tecnico/pages/home_page.dart';
+import 'package:teste_tecnico/pages/europe_products_page.dart';
+import 'package:teste_tecnico/pages/nacional_products_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -48,7 +49,8 @@ class _Ecommerce extends State<Ecommerce> {
             });
           },
           children: const <Widget>[
-            HomePage(),
+            NacionalProductsPage(),
+            EuropeProductsPage(),
           ],
         ),
         Positioned(

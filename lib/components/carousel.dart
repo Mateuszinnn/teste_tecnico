@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:teste_tecnico/models/produtos.dart';
+import 'package:teste_tecnico/models/produtos2.dart';
 import 'package:teste_tecnico/pages/produtos_page.dart';
 
 class Carousel extends StatefulWidget {
-  final List<Produtos> produto;
-  const Carousel({super.key, required this.produto});
+  final List<Produtos>? produto;
+  final List<Produtos2>? produto2;
+  const Carousel({super.key, this.produto, this.produto2});
 
   @override
   State<Carousel> createState() => _CarouselState();
@@ -21,12 +23,29 @@ class _CarouselState extends State<Carousel> {
   @override
   void initState() {
     super.initState();
-    for (int k = 0; k < min(5, widget.produto.length); k++) {
-      if (widget.produto[k].imagem.startsWith('http://placeimg.com/640/480/')) {
-        images.add(
-            'https://loremflickr.com/320/240?random=${Random().nextInt(90)}');
-      } else {
-        images.add(widget.produto[k].imagem);
+    if (widget.produto != null) {
+      for (int k = 0; k < min(5, widget.produto!.length); k++) {
+        if (widget.produto![k].imagem
+            .startsWith('http://placeimg.com/640/480/')) {
+          images.add(
+              'https://loremflickr.com/320/240?random=${Random().nextInt(90)}');
+        } else {
+          images.add(widget.produto![k].imagem);
+        }
+      }
+    }
+
+    if (widget.produto2 != null) {
+      for (int k = 0; k < min(5, widget.produto2!.length); k++) {
+        if (widget.produto2![k].gallery.isNotEmpty) {
+          String firstImage = widget.produto2![k].gallery.first;
+          if (firstImage.startsWith('http://placeimg.com/640/480/')) {
+            images.add(
+                'https://loremflickr.com/320/240?random=${Random().nextInt(90)}');
+          } else {
+            images.add(firstImage);
+          }
+        }
       }
     }
   }
@@ -41,7 +60,7 @@ class _CarouselState extends State<Carousel> {
               context,
               MaterialPageRoute(
                 builder: (context) => ProdutosPage(
-                  produto: widget.produto[activeIndex],
+                  produto: widget.produto![activeIndex],
                   image: images[activeIndex],
                 ),
               ),
@@ -88,6 +107,17 @@ class _CarouselState extends State<Carousel> {
   void animateToSlide(int index) => controller.animateToPage(index);
 
   Widget buildImage(String imageUrl, int index) {
+    String nome = '';
+    String preco = '';
+
+    if (widget.produto != null) {
+      nome = widget.produto![activeIndex].nome;
+      preco = 'R\$ ${widget.produto![activeIndex].preco}';
+    } else if (widget.produto2 != null) {
+      nome = widget.produto2![activeIndex].name;
+      preco = 'R\$ ${widget.produto2![activeIndex].price}';
+    }
+
     return Stack(
       children: [
         ClipRRect(
@@ -105,19 +135,19 @@ class _CarouselState extends State<Carousel> {
             child: Column(
               children: [
                 Text(
-                  '  ${widget.produto[activeIndex].nome}  ',
+                  '  $nome  ',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 17,
-                    fontWeight: FontWeight.w800
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
                 Text(
-                  'R\$ ${widget.produto[activeIndex].preco}',
+                  preco,
                   style: const TextStyle(
                     color: Colors.green,
                     fontSize: 17,
-                    fontWeight: FontWeight.w800
+                    fontWeight: FontWeight.w800,
                   ),
                 ),
               ],

@@ -346,6 +346,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 ],
               ),
             ),
+          const Divider(
+            thickness: 0.5,
+            height: 0.5,
+            color: Colors.white,
+          ),
+          const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: TextButton(
