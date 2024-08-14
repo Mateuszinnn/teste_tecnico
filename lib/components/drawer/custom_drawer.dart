@@ -192,6 +192,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   onChanged: (value) {
                     precoMin = precoMinController.text;
                   },
+                  onTapOutside: (event) {
+                     FocusScope.of(context).unfocus();
+                  },
+                  onSubmitted: (value) {
+                     FocusScope.of(context).unfocus();
+                  },
                 ),
               ),
               SizedBox(
@@ -224,6 +230,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                   onChanged: (value) {
                     precoMax = precoMaxController.text;
+                  },
+                  onTapOutside: (event) {
+                     FocusScope.of(context).unfocus();
+                  },
+                  onSubmitted: (value) {
+                     FocusScope.of(context).unfocus();
                   },
                 ),
               ),

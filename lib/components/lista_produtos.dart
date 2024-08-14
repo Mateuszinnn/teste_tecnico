@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:teste_tecnico/components/carousel.dart';
 import 'package:teste_tecnico/components/info_produtos.dart';
 import 'package:teste_tecnico/components/filtro_item.dart';
-import 'package:teste_tecnico/main.dart';
 import 'package:teste_tecnico/models/produtos.dart';
 import 'package:teste_tecnico/models/produtos2.dart';
 
@@ -70,7 +69,8 @@ class ListaProdutos extends StatelessWidget {
               ],
             ),
           ),
-          if ((produtosFiltrados?.isEmpty ?? true) && (produtos2Filtrados?.isEmpty ?? true))
+          if ((produtosFiltrados?.isEmpty ?? true) &&
+              (produtos2Filtrados?.isEmpty ?? true))
             Column(
               children: [
                 const Center(
@@ -93,12 +93,7 @@ class ListaProdutos extends StatelessWidget {
                   ),
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Ecommerce(),
-                        ),
-                      );
+                      onClearFilters();
                     },
                     child: const Text(
                       '  Voltar a pagina principal  ',

@@ -4,11 +4,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:teste_tecnico/models/produtos.dart';
 import 'package:teste_tecnico/models/produtos2.dart';
-import 'package:teste_tecnico/pages/produtos_page.dart';
+import 'package:teste_tecnico/pages/products_page.dart';
 
 class Carousel extends StatefulWidget {
   final List<Produtos>? produto;
   final List<Produtos2>? produto2;
+
   const Carousel({super.key, this.produto, this.produto2});
 
   @override
@@ -23,6 +24,10 @@ class _CarouselState extends State<Carousel> {
   @override
   void initState() {
     super.initState();
+    _loadImages();
+  }
+
+  void _loadImages() {
     if (widget.produto != null) {
       for (int k = 0; k < min(5, widget.produto!.length); k++) {
         if (widget.produto![k].imagem
@@ -56,15 +61,27 @@ class _CarouselState extends State<Carousel> {
       children: [
         GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProdutosPage(
-                  produto: widget.produto![activeIndex],
-                  image: images[activeIndex],
+            if (widget.produto != null) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductsPage(
+                    produto: widget.produto![activeIndex],
+                    image: images[activeIndex],
+                  ),
                 ),
-              ),
-            );
+              );
+            } else if (widget.produto2 != null) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductsPage(
+                    produto: widget.produto2![activeIndex],
+                    image: images[activeIndex],
+                  ),
+                ),
+              );
+            }
           },
           child: CarouselSlider.builder(
             carouselController: controller,
@@ -111,11 +128,16 @@ class _CarouselState extends State<Carousel> {
     String preco = '';
 
     if (widget.produto != null) {
-      nome = widget.produto![activeIndex].nome;
-      preco = 'R\$ ${widget.produto![activeIndex].preco}';
+      nome = widget.produto![index].nome; 
+      preco = 'R\$ ${widget.produto![index].preco}'; 
     } else if (widget.produto2 != null) {
-      nome = widget.produto2![activeIndex].name;
-      preco = 'R\$ ${widget.produto2![activeIndex].price}';
+      nome = widget.produto2![index].name; 
+      if(widget.produto2![index].hasDiscount){
+        preco = 'R\$ ${((double.tryParse(widget.produto2![index].price))!-(double.tryParse(widget.produto2![index].discountValue))!)}'; 
+      }else{
+        preco = 'R\$ ${widget.produto2![index].price}';
+      }
+      
     }
 
     return Stack(

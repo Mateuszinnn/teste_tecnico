@@ -50,18 +50,29 @@ class _HomePageState extends State<NacionalProductsPage> {
   ) {
     setState(() {
       produtosFiltrados = produtos.where((produto) {
+        // Obtendo se cada filtro está ativo
         bool matchDepartamento =
             departamentosChecked[produto.departamento] ?? false;
         bool matchMaterial = materialChecked[produto.material] ?? false;
         bool matchCategoria = categoriaChecked[produto.categoria] ?? false;
         double precoMini = double.tryParse(precoMin) ?? 0;
         double precoMaxi = double.tryParse(precoMax) ?? double.infinity;
-
         bool matchPreco = (double.tryParse(produto.preco)! >= precoMini &&
             double.tryParse(produto.preco)! <= precoMaxi);
 
-        return (matchDepartamento || matchMaterial || matchCategoria) &&
-            matchPreco;
+        // Verifica se o produto atende aos filtros ativos
+        bool matchesFilters = true;
+
+        if (departamentosChecked.containsValue(true)) {
+          matchesFilters = matchesFilters && matchDepartamento;
+        }
+        if (materialChecked.containsValue(true)) {
+          matchesFilters = matchesFilters && matchMaterial;
+        }
+        if (categoriaChecked.containsValue(true)) {
+          matchesFilters = matchesFilters && matchCategoria;
+        }
+        return matchesFilters && matchPreco;
       }).toList();
       filtrosAtivos = produtosFiltrados.isNotEmpty;
     });
@@ -91,6 +102,12 @@ class _HomePageState extends State<NacionalProductsPage> {
   void _collapseSearchBar() {
     setState(() {
       isExpanded = false;
+    });
+  }
+
+  void _cancelSearch(){
+    setState(() {
+      produtosFiltrados = List.from(produtos);
     });
   }
 
@@ -170,6 +187,7 @@ class _HomePageState extends State<NacionalProductsPage> {
                             onExpand: _expandSearchBar,
                             onCollapse: _collapseSearchBar,
                             searchFilters: _searchFilters,
+                            cancelSearch: _cancelSearch,
                           ),
                         ),
                         const SizedBox(height: 10),

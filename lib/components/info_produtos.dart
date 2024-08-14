@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:teste_tecnico/models/produtos.dart';
 import 'package:teste_tecnico/models/produtos2.dart';
-import 'package:teste_tecnico/pages/produtos_page.dart';
 import 'dart:math';
+
+import 'package:teste_tecnico/pages/products_page.dart';
 
 class InfoProdutos extends StatelessWidget {
   final double width;
@@ -22,7 +23,7 @@ class InfoProdutos extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProdutosPage(
+            builder: (context) => ProductsPage(
               produto: produto,
               image: randomImage,
             ),
@@ -48,13 +49,14 @@ class InfoProdutos extends StatelessWidget {
                             ? randomImage =
                                 'https://loremflickr.com/320/240?random=${Random().nextInt(90)}'
                             : randomImage = produto.imagem ?? ''
-                        : produto is Produtos2 ?
-                            produto.gallery.first != null &&
-                                produto.gallery!.first
-                                    .startsWith('http://placeimg.com/640/480/')
-                            ? randomImage =
-                                'https://loremflickr.com/320/240?random=${Random().nextInt(90)}'
-                            : randomImage = produto.gallery.first ?? '' : '',
+                        : produto is Produtos2
+                            ? produto.gallery.first != null &&
+                                    produto.gallery!.first.startsWith(
+                                        'http://placeimg.com/640/480/')
+                                ? randomImage =
+                                    'https://loremflickr.com/320/240?random=${Random().nextInt(90)}'
+                                : randomImage = produto.gallery.first ?? ''
+                            : '',
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -93,16 +95,70 @@ class InfoProdutos extends StatelessWidget {
               ),
               SizedBox(
                 width: (width / 2) - 45,
-                child: Text(
-                  'R\$ ${produto is Produtos ? produto.preco : (produto as Produtos2).price}',
-                  style: const TextStyle(
-                      letterSpacing: 3,
-                      color: Colors.green,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w800),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                child: produto is Produtos
+                    ? Text(
+                        'R\$ ${produto.preco}',
+                        style: const TextStyle(
+                          letterSpacing: 3,
+                          color: Colors.green,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w800,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                    : (produto as Produtos2).hasDiscount
+                        ? RichText(
+                            text: TextSpan(
+                              children: [
+                                const TextSpan(
+                                  text: 'De: ',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 15,
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text:
+                                      'R\$ ${double.tryParse(produto.price)?.toStringAsFixed(2)} \n',
+                                  style: const TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 15,
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
+                                ),
+                                const TextSpan(
+                                  text: 'Por: ',
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text:
+                                      'R\$ ${(double.tryParse(produto.price)! - double.tryParse(produto.discountValue)!).toStringAsFixed(2)}',
+                                  style: const TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Text(
+                            'R\$ ${produto.price}',
+                            style: const TextStyle(
+                              letterSpacing: 3,
+                              color: Colors.green,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w800,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
               ),
             ],
           ),

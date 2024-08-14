@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:teste_tecnico/components/bottom_navigation/bottom_navigation.dart';
+import 'package:teste_tecnico/pages/cart_page.dart';
 import 'package:teste_tecnico/pages/europe_products_page.dart';
+import 'package:teste_tecnico/pages/history_page.dart';
 import 'package:teste_tecnico/pages/nacional_products_page.dart';
 
 void main() {
@@ -51,12 +53,14 @@ class _Ecommerce extends State<Ecommerce> {
           children: const <Widget>[
             NacionalProductsPage(),
             EuropeProductsPage(),
+            CartPage(),
+            HistoryPage(),
           ],
         ),
         Positioned(
           bottom: 10,
-          left: 40,
-          right: 40,
+          left: 10,
+          right: 10,
           child: Bottomnavigationbar(
             pageIndex: _pageIndex,
             onTabSelected: _onTabSelected,

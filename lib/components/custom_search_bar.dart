@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:teste_tecnico/main.dart';
 
 class CustomSearchBar extends StatefulWidget {
   final bool isExpanded;
@@ -8,6 +7,7 @@ class CustomSearchBar extends StatefulWidget {
   final void Function(
     String nomeProduto,
   ) searchFilters;
+  final void Function() cancelSearch;
 
   const CustomSearchBar({
     super.key,
@@ -15,6 +15,7 @@ class CustomSearchBar extends StatefulWidget {
     required this.onExpand,
     required this.onCollapse,
     required this.searchFilters,
+    required this.cancelSearch,
   });
 
   @override
@@ -85,14 +86,10 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
             onPressed: () {
               setState(() {
                 isSearchBarExpanded = false;
+                searchController.clear();
               });
               widget.onCollapse();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Ecommerce(),
-                ),
-              );
+              widget.cancelSearch();
             },
             child: const Text(
               'Cancelar',

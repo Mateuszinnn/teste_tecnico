@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teste_tecnico/components/custom_search_bar.dart';
-import 'package:teste_tecnico/components/drawer/custom_drawer.dart';
+import 'package:teste_tecnico/components/drawer/custom_drawer2.dart';
 import 'package:teste_tecnico/components/lista_produtos.dart';
 import 'package:teste_tecnico/models/produtos2.dart';
 import 'package:teste_tecnico/services/Apis.dart';
@@ -13,7 +13,7 @@ class EuropeProductsPage extends StatefulWidget {
 }
 
 class _EuropeProductsPageState extends State<EuropeProductsPage> {
- final Apis api = Apis();
+  final Apis api = Apis();
   List<Produtos2> produtos2 = [];
   List<Produtos2> produtosFiltrados = [];
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -33,7 +33,6 @@ class _EuropeProductsPageState extends State<EuropeProductsPage> {
       produtos2 = await api.obterProdutosFornecedor2();
       produtosFiltrados = List.from(produtos2);
       setState(() {});
-      _printProdutos2(produtos2, 5);
       isloading = false;
     } catch (e) {
       setState(() {
@@ -43,25 +42,36 @@ class _EuropeProductsPageState extends State<EuropeProductsPage> {
   }
 
   void _applyFilters(
-    Map<String, bool> discountChecked,
+    bool hasDiscountChecked,
     Map<String, bool> materialChecked,
     Map<String, bool> adjectiveChecked,
     String precoMin,
     String precoMax,
   ) {
     setState(() {
-      produtosFiltrados = produtos2.where((produto2) {
-        bool matchDiscount = discountChecked[produto2.hasDiscount.toString()] ?? false;
-        bool matchMaterial = materialChecked[produto2.material] ?? false;
-        bool matchAdjective = adjectiveChecked[produto2.adjective] ?? false;
+      produtosFiltrados = produtos2.where((produto) {
+
+        bool matchDiscount = hasDiscountChecked ? produto.hasDiscount : true;
+        bool matchMaterial = materialChecked[produto.material] ?? false;
+        bool matchAdjective = adjectiveChecked[produto.adjective] ?? false;
         double precoMini = double.tryParse(precoMin) ?? 0;
         double precoMaxi = double.tryParse(precoMax) ?? double.infinity;
+        bool matchPreco = (double.tryParse(produto.price)! >= precoMini &&
+            double.tryParse(produto.price)! <= precoMaxi);
 
-        bool matchPreco = (double.tryParse(produto2.price)! >= precoMini &&
-            double.tryParse(produto2.price)! <= precoMaxi);
+        // Verifica se o produto atende aos filtros ativos
+        bool matchesFilters = true;
 
-        return (matchDiscount || matchMaterial || matchAdjective) &&
-            matchPreco;
+        if (hasDiscountChecked) {
+          matchesFilters = matchesFilters && matchDiscount;
+        }
+        if (materialChecked.containsValue(true)) {
+          matchesFilters = matchesFilters && matchMaterial;
+        }
+        if (adjectiveChecked.containsValue(true)) {
+          matchesFilters = matchesFilters && matchAdjective;
+        }
+        return matchesFilters && matchPreco;
       }).toList();
       filtrosAtivos = produtosFiltrados.isNotEmpty;
     });
@@ -94,34 +104,10 @@ class _EuropeProductsPageState extends State<EuropeProductsPage> {
     });
   }
 
-  void _printProdutos2(List<Produtos2> produtos2, int quantidade) {
-    int i = 0;
-    for (var produtos2 in produtos2) {
-      // ignore: avoid_print
-      print('\n');
-      // ignore: avoid_print
-      print('desconto: ${produtos2.hasDiscount}');
-      // ignore: avoid_print
-      print('nome: ${produtos2.name}');
-      // ignore: avoid_print
-      print('galeria: ${produtos2.gallery}');
-      // ignore: avoid_print
-      print('descricao: ${produtos2.description}');
-      // ignore: avoid_print
-      print('preco: ${produtos2.price}');
-      // ignore: avoid_print
-      print('valor desconto: ${produtos2.discountValue}');
-      // ignore: avoid_print
-      print('adjetivo: ${produtos2.adjective}');
-      // ignore: avoid_print
-      print('material: ${produtos2.material}');
-      // ignore: avoid_print
-      print('id: ${produtos2.id}');
-      // ignore: avoid_print
-      print('\n');
-      if (i >= quantidade) break;
-      i++;
-    }
+  void _cancelSearch(){
+    setState(() {
+      produtosFiltrados = List.from(produtos2);
+    });
   }
 
   @override
@@ -200,6 +186,7 @@ class _EuropeProductsPageState extends State<EuropeProductsPage> {
                             onExpand: _expandSearchBar,
                             onCollapse: _collapseSearchBar,
                             searchFilters: _searchFilters,
+                            cancelSearch: _cancelSearch,
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -214,7 +201,7 @@ class _EuropeProductsPageState extends State<EuropeProductsPage> {
                       ],
                     ),
                   ),
-        endDrawer: CustomDrawer(
+        endDrawer: CustomDrawer2(
           onApplyFilters: _applyFilters,
         ),
       ),
