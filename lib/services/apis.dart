@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:teste_tecnico/models/compra.dart';
 import 'package:teste_tecnico/models/products1.dart';
 import 'package:teste_tecnico/models/products2.dart';
 import 'package:teste_tecnico/models/products_cart.dart';
@@ -54,12 +55,12 @@ class Apis {
     }
   }
 
-  // Obtem historico de compras
-  Future<List<ProductsCart>> historicoCompras() async {
+// Obtém histórico de compras
+  Future<List<Compra>> historicoCompras() async {
     final response = await http.get(Uri.parse('$baseUrl/compra'));
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
-      return data.map((item) => ProductsCart.fromJson(item)).toList();
+      return data.map((item) => Compra.fromJson(item)).toList();
     } else {
       throw Exception('Falha ao carregar produtos de compras');
     }

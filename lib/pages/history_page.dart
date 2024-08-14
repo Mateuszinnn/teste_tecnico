@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teste_tecnico/components/cart_page_widgets/card_history.dart';
-import 'package:teste_tecnico/models/products_cart.dart';
+import 'package:teste_tecnico/models/compra.dart';
 import 'package:teste_tecnico/services/apis.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -12,28 +12,31 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   final Apis api = Apis();
-  List<ProductsCart> produtoComprados = [];
+  List<Compra> compras = [];
   bool isProdutosLoaded = true;
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _loadHistoricoCompras();
+    _loadHistorico();
   }
 
-  Future<void> _loadHistoricoCompras() async {
+  Future<void> _loadHistorico() async {
     try {
-      produtoComprados = await api.historicoCompras();
+      List<Compra> historicoCompras  = await api.historicoCompras();
       setState(() {
         isLoading = false;
+        compras = historicoCompras;
       });
     } catch (e) {
       setState(() {
         isProdutosLoaded = false;
+        isLoading = false;
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,7 @@ class _HistoryPageState extends State<HistoryPage> {
           ),
         ),
       ),
-      body: produtoComprados.isEmpty
+      body: compras.isEmpty
           //Se o usuario nao comprou produtos mostra a mensagem: 'Você não comprou nenhum produto.'
           ? const Center(
               child: Text(
@@ -91,9 +94,9 @@ class _HistoryPageState extends State<HistoryPage> {
                         Expanded(
                           child: ListView(
                             children: [
-                              for (int i = 0; i < produtoComprados.length; i++)
+                              for (int i = 0; i < compras.length; i++)
                                 CardHistory(
-                                  produtoComprados: produtoComprados[i],
+                                  compra: compras[i],
                                 ),
                             ],
                           ),
