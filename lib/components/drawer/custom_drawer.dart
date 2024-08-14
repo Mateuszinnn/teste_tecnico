@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teste_tecnico/components/drawer/checkbox_item.dart';
-import 'package:teste_tecnico/components/filtro_item.dart';
+import 'package:teste_tecnico/components/drawer/filtro_item.dart';
 
 class CustomDrawer extends StatefulWidget {
   final void Function(

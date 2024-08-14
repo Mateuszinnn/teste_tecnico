@@ -2,13 +2,13 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:teste_tecnico/models/produtos.dart';
-import 'package:teste_tecnico/models/produtos2.dart';
+import 'package:teste_tecnico/models/products1.dart';
+import 'package:teste_tecnico/models/products2.dart';
 import 'package:teste_tecnico/pages/products_page.dart';
 
 class Carousel extends StatefulWidget {
-  final List<Produtos>? produto;
-  final List<Produtos2>? produto2;
+  final List<Products1>? produto;
+  final List<Products2>? produto2;
 
   const Carousel({super.key, this.produto, this.produto2});
 

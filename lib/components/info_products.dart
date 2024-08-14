@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:teste_tecnico/models/produtos.dart';
-import 'package:teste_tecnico/models/produtos2.dart';
+import 'package:teste_tecnico/models/products1.dart';
+import 'package:teste_tecnico/models/products2.dart';
 import 'dart:math';
-
 import 'package:teste_tecnico/pages/products_page.dart';
 
 class InfoProdutos extends StatelessWidget {
@@ -42,14 +41,14 @@ class InfoProdutos extends StatelessWidget {
                   width: (width / 2) - 45,
                   height: 180,
                   child: Image.network(
-                    produto is Produtos
+                    produto is Products1
                         ? produto.imagem != null &&
                                 produto.imagem!
                                     .startsWith('http://placeimg.com/640/480/')
                             ? randomImage =
                                 'https://loremflickr.com/320/240?random=${Random().nextInt(90)}'
                             : randomImage = produto.imagem ?? ''
-                        : produto is Produtos2
+                        : produto is Products2
                             ? produto.gallery.first != null &&
                                     produto.gallery!.first.startsWith(
                                         'http://placeimg.com/640/480/')
@@ -65,9 +64,9 @@ class InfoProdutos extends StatelessWidget {
               SizedBox(
                 width: (width / 2) - 45,
                 child: Text(
-                  produto is Produtos
+                  produto is Products1
                       ? produto.nome
-                      : (produto as Produtos2).name,
+                      : (produto as Products2).name,
                   style: const TextStyle(
                     fontWeight: FontWeight.w800,
                     letterSpacing: 3,
@@ -81,9 +80,9 @@ class InfoProdutos extends StatelessWidget {
               SizedBox(
                 width: (width / 2) - 45,
                 child: Text(
-                  produto is Produtos
+                  produto is Products1
                       ? produto.descricao
-                      : (produto as Produtos2).description,
+                      : (produto as Products2).description,
                   style: const TextStyle(
                     letterSpacing: 3,
                     color: Colors.grey,
@@ -95,7 +94,7 @@ class InfoProdutos extends StatelessWidget {
               ),
               SizedBox(
                 width: (width / 2) - 45,
-                child: produto is Produtos
+                child: produto is Products1
                     ? Text(
                         'R\$ ${produto.preco}',
                         style: const TextStyle(
@@ -107,7 +106,7 @@ class InfoProdutos extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       )
-                    : (produto as Produtos2).hasDiscount
+                    : (produto as Products2).hasDiscount
                         ? RichText(
                             text: TextSpan(
                               children: [

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:teste_tecnico/components/custom_search_bar.dart';
 import 'package:teste_tecnico/components/drawer/custom_drawer.dart';
-import 'package:teste_tecnico/components/lista_produtos.dart';
-import 'package:teste_tecnico/models/produtos.dart';
+import 'package:teste_tecnico/components/list_products.dart';
+import 'package:teste_tecnico/models/products1.dart';
 import 'package:teste_tecnico/services/Apis.dart';
 
 class NacionalProductsPage extends StatefulWidget {
@@ -14,8 +14,8 @@ class NacionalProductsPage extends StatefulWidget {
 
 class _HomePageState extends State<NacionalProductsPage> {
   final Apis api = Apis();
-  List<Produtos> produtos = [];
-  List<Produtos> produtosFiltrados = [];
+  List<Products1> produtos = [];
+  List<Products1> produtosFiltrados = [];
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool filtrosAtivos = false;
   bool isloading = true;
@@ -62,7 +62,6 @@ class _HomePageState extends State<NacionalProductsPage> {
 
         // Verifica se o produto atende aos filtros ativos
         bool matchesFilters = true;
-
         if (departamentosChecked.containsValue(true)) {
           matchesFilters = matchesFilters && matchDepartamento;
         }
@@ -105,7 +104,7 @@ class _HomePageState extends State<NacionalProductsPage> {
     });
   }
 
-  void _cancelSearch(){
+  void _cancelSearch() {
     setState(() {
       produtosFiltrados = List.from(produtos);
     });
@@ -118,6 +117,7 @@ class _HomePageState extends State<NacionalProductsPage> {
     return SafeArea(
       bottom: false,
       top: false,
+      //App Bar
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -141,6 +141,7 @@ class _HomePageState extends State<NacionalProductsPage> {
           ],
         ),
         body: failLoad
+            //Se falhar na requisição dos dados => 'Falha na requisição dos dados!'
             ? Container(
                 color: Colors.black,
                 width: MediaQuery.of(context).size.width,
@@ -156,6 +157,7 @@ class _HomePageState extends State<NacionalProductsPage> {
                   ),
                 ),
               )
+            //Se obtiver os dados comeca a carregar a pagina
             : isloading
                 ? Container(
                     color: Colors.black,
@@ -176,12 +178,14 @@ class _HomePageState extends State<NacionalProductsPage> {
                       ],
                     ),
                   )
+                //Quando carregar mostra a barra de pesquisa e os produtos
                 : Container(
                     color: Colors.black,
                     child: Column(
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          //Barra de pesquisa
                           child: CustomSearchBar(
                             isExpanded: isExpanded,
                             onExpand: _expandSearchBar,
@@ -191,7 +195,8 @@ class _HomePageState extends State<NacionalProductsPage> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        ListaProdutos(
+                        //Lista de produtos
+                        ListProducts(
                           totalWidth: totalWidth,
                           produtos: produtos,
                           produtosFiltrados: produtosFiltrados,
@@ -202,6 +207,7 @@ class _HomePageState extends State<NacionalProductsPage> {
                       ],
                     ),
                   ),
+        //Drawer
         endDrawer: CustomDrawer(
           onApplyFilters: _applyFilters,
         ),

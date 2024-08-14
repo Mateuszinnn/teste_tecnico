@@ -51,12 +51,14 @@ class _Ecommerce extends State<Ecommerce> {
             });
           },
           children: const <Widget>[
-            NacionalProductsPage(),
-            EuropeProductsPage(),
-            CartPage(),
-            HistoryPage(),
+            NacionalProductsPage(), // Produtos fornecedor 1
+            EuropeProductsPage(), // Produtos fornecedor 2
+            CartPage(), // Carrinho de compras
+            HistoryPage(), // Historico de compras
           ],
         ),
+
+        // Navegação
         Positioned(
           bottom: 10,
           left: 10,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:teste_tecnico/components/custom_search_bar.dart';
 import 'package:teste_tecnico/components/drawer/custom_drawer2.dart';
-import 'package:teste_tecnico/components/lista_produtos.dart';
-import 'package:teste_tecnico/models/produtos2.dart';
+import 'package:teste_tecnico/components/list_products.dart';
+import 'package:teste_tecnico/models/products2.dart';
 import 'package:teste_tecnico/services/Apis.dart';
 
 class EuropeProductsPage extends StatefulWidget {
@@ -14,8 +14,8 @@ class EuropeProductsPage extends StatefulWidget {
 
 class _EuropeProductsPageState extends State<EuropeProductsPage> {
   final Apis api = Apis();
-  List<Produtos2> produtos2 = [];
-  List<Produtos2> produtosFiltrados = [];
+  List<Products2> produtos2 = [];
+  List<Products2> produtosFiltrados = [];
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool filtrosAtivos = false;
   bool isloading = true;
@@ -50,7 +50,7 @@ class _EuropeProductsPageState extends State<EuropeProductsPage> {
   ) {
     setState(() {
       produtosFiltrados = produtos2.where((produto) {
-
+        // Obtendo se cada filtro está ativo
         bool matchDiscount = hasDiscountChecked ? produto.hasDiscount : true;
         bool matchMaterial = materialChecked[produto.material] ?? false;
         bool matchAdjective = adjectiveChecked[produto.adjective] ?? false;
@@ -61,7 +61,6 @@ class _EuropeProductsPageState extends State<EuropeProductsPage> {
 
         // Verifica se o produto atende aos filtros ativos
         bool matchesFilters = true;
-
         if (hasDiscountChecked) {
           matchesFilters = matchesFilters && matchDiscount;
         }
@@ -104,7 +103,7 @@ class _EuropeProductsPageState extends State<EuropeProductsPage> {
     });
   }
 
-  void _cancelSearch(){
+  void _cancelSearch() {
     setState(() {
       produtosFiltrados = List.from(produtos2);
     });
@@ -119,6 +118,7 @@ class _EuropeProductsPageState extends State<EuropeProductsPage> {
       top: false,
       child: Scaffold(
         key: _scaffoldKey,
+        //App bar
         appBar: AppBar(
           backgroundColor: Colors.black,
           title: const Text(
@@ -140,6 +140,7 @@ class _EuropeProductsPageState extends State<EuropeProductsPage> {
           ],
         ),
         body: failLoad
+            //Se falhar na requisição dos dados => 'Falha na requisição dos dados!'
             ? Container(
                 color: Colors.black,
                 width: MediaQuery.of(context).size.width,
@@ -155,6 +156,7 @@ class _EuropeProductsPageState extends State<EuropeProductsPage> {
                   ),
                 ),
               )
+            //Se obtiver os dados comeca a carregar a pagina
             : isloading
                 ? Container(
                     color: Colors.black,
@@ -175,12 +177,14 @@ class _EuropeProductsPageState extends State<EuropeProductsPage> {
                       ],
                     ),
                   )
+                //Quando carregar mostra a barra de pesquisa e os produtos
                 : Container(
                     color: Colors.black,
                     child: Column(
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          //Barra de pesquisa
                           child: CustomSearchBar(
                             isExpanded: isExpanded,
                             onExpand: _expandSearchBar,
@@ -190,7 +194,8 @@ class _EuropeProductsPageState extends State<EuropeProductsPage> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        ListaProdutos(
+                        //Lista de produtos
+                        ListProducts(
                           totalWidth: totalWidth,
                           produtos2: produtos2,
                           produtos2Filtrados: produtosFiltrados,
@@ -201,6 +206,7 @@ class _EuropeProductsPageState extends State<EuropeProductsPage> {
                       ],
                     ),
                   ),
+        //Drawer
         endDrawer: CustomDrawer2(
           onApplyFilters: _applyFilters,
         ),

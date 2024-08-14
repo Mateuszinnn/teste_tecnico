@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:teste_tecnico/models/products_cart.dart';
 
-class CardHistorico extends StatelessWidget {
+class CardHistory extends StatelessWidget {
   final ProductsCart produtoComprados;
-  const CardHistorico({
+  const CardHistory({
     super.key,
     required this.produtoComprados,
   });
@@ -14,13 +14,13 @@ class CardHistorico extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(25),
           color: Colors.black,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(10.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
                 height: 80,

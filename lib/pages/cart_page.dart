@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:teste_tecnico/components/bottom_cart.dart';
-import 'package:teste_tecnico/components/card_cart.dart';
+import 'package:teste_tecnico/components/cart/bottom_cart.dart';
+import 'package:teste_tecnico/components/cart/card_cart.dart';
 import 'package:teste_tecnico/models/products_cart.dart';
 import 'package:teste_tecnico/services/apis.dart';
 
@@ -54,6 +54,7 @@ class _CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      //App Bar
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
@@ -69,7 +70,9 @@ class _CartPageState extends State<CartPage> {
       body: Container(
           width: width,
           color: Colors.grey[500],
+          //Verifica se os produtos foram obtidos
           child: isProdutosLoaded
+              //Se foram carrega a pagina
               ? isLoading
                   ? const Center(
                       child: Column(
@@ -78,7 +81,7 @@ class _CartPageState extends State<CartPage> {
                             color: Colors.white,
                           ),
                           Text(
-                            'O carrinho está vazio.',
+                            'Carregando produtos.',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
@@ -88,17 +91,21 @@ class _CartPageState extends State<CartPage> {
                         ],
                       ),
                     )
+                  //Verifica se tem produtos no carrinho
                   : produtoCarrinho.isNotEmpty
+                      //Se tiver mostra todos eles na tela
                       ? Stack(
                           children: [
                             Column(
                               children: [
                                 Expanded(
+                                  //Lista de produtos no carrinho
                                   child: ListView(
                                     children: [
                                       for (int i = 0;
                                           i < produtoCarrinho.length;
                                           i++)
+                                        //Card com as infos dos produtos
                                         CardCart(
                                           produtoCarrinho: produtoCarrinho[i],
                                           onRemove: () {
@@ -117,6 +124,7 @@ class _CartPageState extends State<CartPage> {
                               bottom: 0,
                               left: 0,
                               right: 0,
+                              //Parte inferior que mostra valores e botao de compra
                               child: BottomCart(
                                 precoTotal: _calcularPrecoTotal(),
                                 produtoCarrinho: produtoCarrinho,
@@ -125,6 +133,7 @@ class _CartPageState extends State<CartPage> {
                             ),
                           ],
                         )
+                      //Se nao tiver produtos => 'O carrinho está vazio.'
                       : const Center(
                           child: Text(
                             'O carrinho está vazio.',
@@ -135,6 +144,7 @@ class _CartPageState extends State<CartPage> {
                             ),
                           ),
                         )
+              //Indicador de carregamento da pagina
               : const Center(
                   child: Column(
                     children: [

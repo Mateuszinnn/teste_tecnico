@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:teste_tecnico/components/carousel.dart';
-import 'package:teste_tecnico/components/info_produtos.dart';
-import 'package:teste_tecnico/components/filtro_item.dart';
-import 'package:teste_tecnico/models/produtos.dart';
-import 'package:teste_tecnico/models/produtos2.dart';
-
-class ListaProdutos extends StatelessWidget {
+import 'package:teste_tecnico/components/info_products.dart';
+import 'package:teste_tecnico/components/drawer/filtro_item.dart';
+import 'package:teste_tecnico/models/products1.dart';
+import 'package:teste_tecnico/models/products2.dart';
+class ListProducts extends StatelessWidget {
   final double totalWidth;
-  final List<Produtos>? produtos;
-  final List<Produtos2>? produtos2;
-  final List<Produtos>? produtosFiltrados;
-  final List<Produtos2>? produtos2Filtrados;
+  final List<Products1>? produtos;
+  final List<Products2>? produtos2;
+  final List<Products1>? produtosFiltrados;
+  final List<Products2>? produtos2Filtrados;
   final bool filtrosAtivos;
   final VoidCallback onClearFilters;
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  const ListaProdutos({
+  const ListProducts({
     super.key,
     required this.totalWidth,
     this.produtos,

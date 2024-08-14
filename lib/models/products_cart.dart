@@ -1,3 +1,4 @@
+//Modelo para produtos no carrinho
 class ProductsCart {
   final String id;
   final String nome;

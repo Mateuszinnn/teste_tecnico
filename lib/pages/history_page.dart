@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:teste_tecnico/components/card_historico.dart';
+import 'package:teste_tecnico/components/cart_page_widgets/card_history.dart';
 import 'package:teste_tecnico/models/products_cart.dart';
 import 'package:teste_tecnico/services/apis.dart';
 
@@ -12,7 +12,6 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   final Apis api = Apis();
-
   List<ProductsCart> produtoComprados = [];
   bool isProdutosLoaded = true;
   bool isLoading = true;
@@ -39,6 +38,7 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //app bar
       appBar: AppBar(
         backgroundColor: Colors.black,
         centerTitle: true,
@@ -52,6 +52,7 @@ class _HistoryPageState extends State<HistoryPage> {
         ),
       ),
       body: produtoComprados.isEmpty
+          //Se o usuario nao comprou produtos mostra a mensagem: 'Você não comprou nenhum produto.'
           ? const Center(
               child: Text(
                 'Você não comprou nenhum produto.',
@@ -62,8 +63,11 @@ class _HistoryPageState extends State<HistoryPage> {
                 ),
               ),
             )
+          //Se comprou produtos verifica se os produtos foram obtidos
           : isProdutosLoaded
+              //Se foram obtidos comeca o carregamento da pagina
               ? isLoading
+                  //enquanto carrega
                   ? const Center(
                       child: Column(
                         children: [
@@ -81,13 +85,14 @@ class _HistoryPageState extends State<HistoryPage> {
                         ],
                       ),
                     )
+                  //Depois de carregar mostra os produtos comprados
                   : Column(
                       children: [
                         Expanded(
                           child: ListView(
                             children: [
                               for (int i = 0; i < produtoComprados.length; i++)
-                                CardHistorico(
+                                CardHistory(
                                   produtoComprados: produtoComprados[i],
                                 ),
                             ],
@@ -96,6 +101,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         const SizedBox(height: 77)
                       ],
                     )
+              //Se nao obtiver os produtos => 'Erro ao carregar histórico.'
               : const Center(
                   child: Text(
                     'Erro ao carregar histórico.',
